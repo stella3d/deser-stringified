@@ -153,7 +153,6 @@ data: |
             data: T,
         }
         
-        // updated TOML string using a regular string literal with escaped newlines
         let toml_str = "data = \"\"\"\nkey = 1\nenabled = false\n\"\"\"";
         let parsed: Example<toml::Value> = toml::from_str(toml_str).unwrap();
         
