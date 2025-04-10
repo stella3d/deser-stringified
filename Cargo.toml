@@ -5,5 +5,12 @@ edition = "2024"
 
 [dependencies]
 serde = { version = "1.0.219", features = ["derive", "std", "alloc"] }
-serde_json = { version = "1.0.140", features = ["std", "alloc"] }
-serde_yaml = "0.9.34"
+serde_json = { version = "1.0.140", features = ["std", "alloc"], optional = true }
+serde_yaml = { version = "0.9.34", optional = true }
+toml = { version = "0.8.20", optional = true }
+
+[features]
+default = ["json"]
+json = ["serde_json"]
+yaml = ["serde_yaml"]
+toml_format = ["toml"]
