@@ -90,7 +90,7 @@ mod tests {
     #[derive(Deserialize)]
     struct Metadata {
         key: i32,
-        enabled: bool, // added new field
+        enabled: bool,
     }
 
     #[test]
@@ -102,7 +102,6 @@ mod tests {
             data: T,
         }
 
-        // updated JSON string to include "enabled": false
         let json_str = r#"{"data": "{\"key\": 1, \"enabled\": false}"}"#;
         let parsed: Example<serde_json::Value> = serde_json::from_str(json_str).unwrap();
         assert_eq!(parsed.data, serde_json::json!({"key": 1, "enabled": false}));
@@ -121,7 +120,6 @@ mod tests {
             data: T,
         }
 
-        // updated YAML string with "enabled: false"
         let yaml_str = r#"
 data: |
   key: 1
