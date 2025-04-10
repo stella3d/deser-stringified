@@ -25,7 +25,11 @@ where
         type Value = T;
 
         fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
-            formatter.write_str("a string containing formatted data")
+            write!(
+                formatter,
+                "a string containing formatted data that parses to type {}",
+                std::any::type_name::<T>()
+            )
         }
 
         fn visit_str<A>(self, value: &str) -> Result<Self::Value, A>
@@ -50,7 +54,7 @@ where
     })
 }
 
-#[cfg(feature = "json")]
+#[cfg(feature = "serde_json")]
 pub fn deser_stringified_json<'de, D, T>(deserializer: D) -> Result<T, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -60,7 +64,7 @@ where
     deser_stringified_format(deserializer, |s| serde_json::from_str(s))
 }
 
-#[cfg(feature = "yaml")]
+#[cfg(feature = "serde_yaml")]
 pub fn deser_stringified_yaml<'de, D, T>(deserializer: D) -> Result<T, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -69,7 +73,7 @@ where
     deser_stringified_format(deserializer, |s| serde_yaml::from_str(s))
 }
 
-#[cfg(feature = "toml_format")]
+#[cfg(feature = "toml")]
 pub fn deser_stringified_toml<'de, D, T>(deserializer: D) -> Result<T, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -90,7 +94,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "json")]
+    #[cfg(feature = "serde_json")]
     fn json_parsing() {
         #[derive(Deserialize)]
         struct Example<T: DeserializeOwned> {
@@ -109,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    #[cfg(feature = "yaml")]
+    #[cfg(feature = "serde_yaml")]
     fn yaml_parsing() {
         #[derive(Deserialize)]
         struct Example<T: DeserializeOwned> {
@@ -143,7 +147,7 @@ data: |
     }
 
     #[test]
-    #[cfg(feature = "toml_format")]
+    #[cfg(feature = "toml")]
     fn toml_parsing() {
         #[derive(Deserialize)]
         struct Example<T: serde::de::DeserializeOwned> {

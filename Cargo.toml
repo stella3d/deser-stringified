@@ -10,7 +10,7 @@ serde_yaml = { version = "0.9.34", optional = true }
 toml = { version = "0.8.20", optional = true }
 
 [features]
-default = ["json"]
-json = ["serde_json"]
-yaml = ["serde_yaml"]
-toml_format = ["toml"]
+default = ["serde_json"]
+serde_json = ["dep:serde_json"]
+serde_yaml = ["dep:serde_yaml"]
+toml = ["dep:toml"]
